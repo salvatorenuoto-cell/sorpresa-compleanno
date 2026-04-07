@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>NOI ❤️</title>
+
+ 
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #fff0f5, #ffe4ec);
+    text-align: center;
+    color: #d63384;
+    padding: 30px;
+    overflow-x: hidden;
+}
+
+ 
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    max-width: 500px;
+    margin: auto;
+    transition: all 0.5s ease;
+}
+
+ 
+.hidden {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+    position: absolute;
+}
+
+ 
+button {
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+ 
+button:hover {
+    background: #c9184a;
+    transform: scale(1.1);
+}
+
+ 
+.item {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px;
+    border: 2px dashed #ff4d6d;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+ 
+.item:hover {
+    transform: scale(1.05);
+}
+
+ 
+.packed {
+    color: white;
+}
+
+ 
+.correct {
+    background: #28a745;
+}
+
+ 
+.wrong {
+    background: #dc3545;
+}
+
+ 
+/* CUORI ANIMATI */
+.hearts::before {
+    content: "❤️ ❤️ ❤️ ❤️ ❤️ ❤️ ❤️";
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    animation: float 12s linear infinite;
+    opacity: 0.15;
+    font-size: 25px;
+}
+
+ 
+@keyframes float {
+    0% { transform: translateY(100vh); }
+    100% { transform: translateY(-10vh); }
+}
+
+ 
+/* ANIMAZIONE FINALE */
+#step3 {
+    animation: reveal 1s ease;
+}
+
+ 
+@keyframes reveal {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+}
+</style>
+</head>
+
+ 
+<body>
+
+ 
+<div class="hearts"></div>
+
+ 
+<!-- STEP 1 -->
+<div id="step1" class="card">
+    <h1 id="typing"></h1>
+
+ 
+    <!-- METTI UNA VOSTRA FOTO QUI -->
+    <img src="https://via.placeholder.com/400x250" style="width:100%; border-radius:15px; margin-bottom:15px;">
+
+ 
+    <p>
+        Quest'anno come sai abbiamo dovuto sacrificare la nostra vacanza estiva per un qualcosa di più grande, e dato che da qualche anno ormai il tuo regalo di compleanno era proprio quello, ho voluto fare un qualcosa che (anche se in piccolo) riprenda un pò l'idea ma in modo più speciale. Per far si che questo accada posso dirti soltanto che passeremo 2 giorni fuori casa soltanto noi due. 
+    </p>
+
+ 
+    <p>Sei pronta per questa avventura in moto?</p>
+
+ 
+    <button onclick="nextStep(2)">SI CICHIII 😍</button>
+</div>
+
+ 
+<!-- STEP 2 -->
+<div id="step2" class="hidden card">
+    <h2>Prepara lo zaino 🧳</h2>
+    <p>Scegli bene cosa portare...</p>
+
+ 
+    <div>
+        <div class="item" onclick="check(this, true)"> Un Abito elegante serale</div>
+        <div class="item" onclick="check(this, true)"> 2 Vestitini estivi</div>
+        <div class="item" onclick="check(this, true)">Costume</div>
+        <div class="item" onclick="check(this, false)">Social</div>
+        <div class="item" onclick="check(this, true)">Casco e giacca</div>
+        <div class="item" onclick="check(this, false)">Pensieri negativi</div>
+        <div class="item" onclick="check(this, true)"> Telo da mare e crema solare</div>
+    </div>
+
+ 
+    <p id="feedback" style="margin-top:20px; font-weight:bold;"></p>
+
+ 
+    <button id="finalBtn" class="hidden" onclick="nextStep(3)">
+        Ho segnato tutto! 😍
+    </button>
+</div>
+
+ 
+<!-- STEP 3 -->
+<div id="step3" class="hidden card">
+    <h1>Destinazione segreta 🤫</h1>
+
+ 
+    <p>La scoprirai solo salendo in moto con me ❤️</p>
+
+ 
+    <p>📅Partenza 12 Giugno 2026</p>
+    <p>📍 Ore 10:30 da casa mia</p>
+
+ 
+    <h3 id="countdown"></h3>
+
+ 
+    <p>Non fare domande... fidati di me. TI AMO ❤️ </p>
+</div>
+
+ 
+<!-- MUSICA (aggiungi un file tuo) -->
+<audio autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
+</audio>
+
+ 
+<script>
+let count = 0;
+
+ 
+function nextStep(step) {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+    document.getElementById('step' + step).classList.remove('hidden');
+}
+
+ 
+function check(el, correct) {
+
+ 
+    if (!el.classList.contains('packed')) {
+        el.classList.add('packed');
+        count++;
+
+ 
+        if (correct) {
+            el.classList.add('correct');
+            document.getElementById('feedback').innerText = "ASSOLUTAMENTE SI amore ❤️";
+        } else {
+            el.classList.add('wrong');
+            document.getElementById('feedback').innerText = "DA LASCIARE A CASA!";
+        }
+
+ 
+    } else {
+        el.classList.remove('packed', 'correct', 'wrong');
+        count--;
+    }
+
+ 
+    if (count >= 3) {
+        document.getElementById('finalBtn').classList.remove('hidden');
+    } else {
+        document.getElementById('finalBtn').classList.add('hidden');
+    }
+}
+
+ 
+/* TYPING EFFECT */
+let text = "Ciao Amore Mio ❤️";
+let i = 0;
+
+ 
+function typing() {
+    if (i < text.length) {
+        document.getElementById("typing").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typing, 80);
+    }
+}
+typing();
+
+ 
+/* COUNTDOWN */
+setInterval(() => {
+    let date = new Date("June 12, 2026 10:30:00").getTime();
+    let now = new Date().getTime();
+    let diff = date - now;
+
+ 
+    let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    document.getElementById("countdown").innerText =
+        "⏳ Mancano " + days + " giorni!";
+}, 1000);
+
+ 
+</script>
+
+ 
+</body>
+</html>
